@@ -1,7 +1,8 @@
 package com.testing.atul.flippergame;
 
-import android.app.Activity;
-import android.graphics.Color;
+import android.annotation.TargetApi;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,34 +12,59 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.List;
+@SuppressWarnings("deprecation")
+public class MainActivity extends AppCompatActivity{
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+    int blackbg;
+    int whitebg;
+    int no_of_clicks;
+    GridView table;
+    TextView counter;
 
-    //int blackbg = this.getResources().getColor(R.color.black);
-    //int whitebg = this.getResources().getColor(R.color.white);
-    static Button b11, b12, b13, b14, b21, b22, b23, b24, b31, b32, b33, b34, b41, b42, b43, b44;
-
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        blackbg = R.color.black;
+        whitebg = R.color.white;
+        counter = (TextView)findViewById(R.id.moves_box);
+        counter.setText("0");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        buttonInitializer();
+
+        table = (GridView) findViewById(R.id.gridView);
+        table.setAdapter(new CustomAdapter(this));
+
+        table.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                //Toast.makeText(MainActivity.this, "" + position,Toast.LENGTH_SHORT).show();
+                no_of_clicks++;
+                counter.setText(Integer.toString(no_of_clicks));
+                flipColor(v,position);
+            }
+        });
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        assert fab!= null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "The reset function to be called", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "You reset.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                resetBoxes();
             }
         });
 
         FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
+        assert fab2 != null;
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,79 +72,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .setAction("Action", null).show();
             }
         });
-    }
-
-    public void buttonInitializer(){
-        b11 = (Button)findViewById(R.id.bgrid_11);
-        b12 = (Button)findViewById(R.id.bgrid_12);
-        b13 = (Button)findViewById(R.id.bgrid_13);
-        b14 = (Button)findViewById(R.id.bgrid_14);
-        b21 = (Button)findViewById(R.id.bgrid_21);
-        b22 = (Button)findViewById(R.id.bgrid_22);
-        b23 = (Button)findViewById(R.id.bgrid_23);
-        b24 = (Button)findViewById(R.id.bgrid_24);
-        b31 = (Button)findViewById(R.id.bgrid_31);
-        b32 = (Button)findViewById(R.id.bgrid_32);
-        b33 = (Button)findViewById(R.id.bgrid_33);
-        b34 = (Button)findViewById(R.id.bgrid_34);
-        b41 = (Button)findViewById(R.id.bgrid_41);
-        b42 = (Button)findViewById(R.id.bgrid_42);
-        b43 = (Button)findViewById(R.id.bgrid_43);
-        b44 = (Button)findViewById(R.id.bgrid_44);
-    }
-
-    @SuppressWarnings("deprecation")
-    public void b11_clicked(View v){
-        if(b21.getDrawingCacheBackgroundColor()==getResources().getColor(R.color.black))
-            b21.setBackgroundColor(getResources().getColor(R.color.white));
-        else
-            b21.setBackgroundColor(getResources().getColor(R.color.white));
-
-        if(b12.getDrawingCacheBackgroundColor()==getResources().getColor(R.color.black))
-            b12.setBackgroundColor(getResources().getColor(R.color.white));
-        else
-            b12.setBackgroundColor(getResources().getColor(R.color.white));
-    }
-
-    public void b12_clicked(View v){
-        if(b11.getDrawingCacheBackgroundColor()==getResources().getColor(R.color.black))
-            b11.setBackgroundColor(getResources().getColor(R.color.white));
-        else
-            b11.setBackgroundColor(getResources().getColor(R.color.white));
-
-        if(b22.getDrawingCacheBackgroundColor()==getResources().getColor(R.color.black))
-            b22.setBackgroundColor(getResources().getColor(R.color.white));
-        else
-            b22.setBackgroundColor(getResources().getColor(R.color.white));
-
-        if(b13.getDrawingCacheBackgroundColor()==getResources().getColor(R.color.black))
-            b13.setBackgroundColor(getResources().getColor(R.color.white));
-        else
-            b13.setBackgroundColor(getResources().getColor(R.color.white));
-    }
-
-    public void b13_clicked(View v){
-        if(b21.getDrawingCacheBackgroundColor()==getResources().getColor(R.color.black))
-            b21.setBackgroundColor(getResources().getColor(R.color.white));
-        else
-            b21.setBackgroundColor(getResources().getColor(R.color.white));
-
-        if(b12.getDrawingCacheBackgroundColor()==getResources().getColor(R.color.black))
-            b12.setBackgroundColor(getResources().getColor(R.color.white));
-        else
-            b12.setBackgroundColor(getResources().getColor(R.color.white));
-    }
-
-    public void b11_clicked(View v){
-        if(b21.getDrawingCacheBackgroundColor()==getResources().getColor(R.color.black))
-            b21.setBackgroundColor(getResources().getColor(R.color.white));
-        else
-            b21.setBackgroundColor(getResources().getColor(R.color.white));
-
-        if(b12.getDrawingCacheBackgroundColor()==getResources().getColor(R.color.black))
-            b12.setBackgroundColor(getResources().getColor(R.color.white));
-        else
-            b12.setBackgroundColor(getResources().getColor(R.color.white));
     }
 
     @Override
@@ -143,8 +96,182 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onClick(View v) {
-        
+    public void flipColor(View v,int pos){
+        if(pos==0){
+            View box = table.getChildAt(1);
+            invertSingle(box);
+
+            View box2 = table.getChildAt(4);
+            invertSingle(box2);
+        }
+        if(pos==3){
+            View box = table.getChildAt(2);
+            invertSingle(box);
+
+            View box2 = table.getChildAt(7);
+            invertSingle(box2);
+        }
+        if(pos==12){
+            View box = table.getChildAt(8);
+            invertSingle(box);
+
+            View box2 = table.getChildAt(13);
+            invertSingle(box2);
+        }
+        if(pos==15){
+            View box = table.getChildAt(14);
+            invertSingle(box);
+
+            View box2 = table.getChildAt(11);
+            invertSingle(box2);
+        }
+        if(pos==1){
+            View box = table.getChildAt(0);
+            invertSingle(box);
+
+            View box2 = table.getChildAt(2);
+            invertSingle(box2);
+
+            View box3 = table.getChildAt(5);
+            invertSingle(box3);
+        }
+        if(pos==2){
+            View box = table.getChildAt(1);
+            invertSingle(box);
+
+            View box2 = table.getChildAt(3);
+            invertSingle(box2);
+
+            View box3 = table.getChildAt(6);
+            invertSingle(box3);
+        }
+        if(pos==4){
+            View box = table.getChildAt(0);
+            invertSingle(box);
+
+            View box2 = table.getChildAt(5);
+            invertSingle(box2);
+
+            View box3 = table.getChildAt(8);
+            invertSingle(box3);
+        }
+        if(pos==8){
+            View box = table.getChildAt(4);
+            invertSingle(box);
+
+            View box2 = table.getChildAt(9);
+            invertSingle(box2);
+
+            View box3 = table.getChildAt(12);
+            invertSingle(box3);
+        }
+        if(pos==7){
+            View box = table.getChildAt(3);
+            invertSingle(box);
+
+            View box2 = table.getChildAt(6);
+            invertSingle(box2);
+
+            View box3 = table.getChildAt(11);
+            invertSingle(box3);
+        }
+        if(pos==11){
+            View box = table.getChildAt(10);
+            invertSingle(box);
+
+            View box2 = table.getChildAt(7);
+            invertSingle(box2);
+
+            View box3 = table.getChildAt(15);
+            invertSingle(box3);
+        }
+        if(pos==13){
+            View box = table.getChildAt(12);
+            invertSingle(box);
+
+            View box2 = table.getChildAt(14);
+            invertSingle(box2);
+
+            View box3 = table.getChildAt(9);
+            invertSingle(box3);
+        }
+        if(pos==14){
+            View box = table.getChildAt(13);
+            invertSingle(box);
+
+            View box2 = table.getChildAt(15);
+            invertSingle(box2);
+
+            View box3 = table.getChildAt(10);
+            invertSingle(box3);
+        }
+        if(pos==5){
+            View box = table.getChildAt(1);
+            invertSingle(box);
+
+            View box2 = table.getChildAt(4);
+            invertSingle(box2);
+
+            View box3 = table.getChildAt(6);
+            invertSingle(box3);
+
+            View box4 = table.getChildAt(9);
+            invertSingle(box4);
+        }
+        if(pos==6){
+            View box = table.getChildAt(2);
+            invertSingle(box);
+
+            View box2 = table.getChildAt(5);
+            invertSingle(box2);
+
+            View box3 = table.getChildAt(7);
+            invertSingle(box3);
+
+            View box4 = table.getChildAt(10);
+            invertSingle(box4);
+        }
+        if(pos==9){
+            View box = table.getChildAt(5);
+            invertSingle(box);
+
+            View box2 = table.getChildAt(8);
+            invertSingle(box2);
+
+            View box3 = table.getChildAt(10);
+            invertSingle(box3);
+
+            View box4 = table.getChildAt(13);
+            invertSingle(box4);
+        }
+        if(pos==10){
+            View box = table.getChildAt(6);
+            invertSingle(box);
+
+            View box2 = table.getChildAt(9);
+            invertSingle(box2);
+
+            View box3 = table.getChildAt(11);
+            invertSingle(box3);
+
+            View box4 = table.getChildAt(14);
+            invertSingle(box4);
+        }
+    }
+    public void invertSingle(View v){
+        View box = v;
+        if(((ColorDrawable)box.getBackground()).getColor()==blackbg)
+            box.setBackgroundColor(whitebg);
+        else
+            box.setBackgroundColor(blackbg);
+    }
+
+    public void resetBoxes(){
+        for ( int i = 0; i < 16; i++ ) {
+            View box = table.getChildAt(i);
+            box.setBackgroundColor(blackbg);
+        }
+        no_of_clicks=0;
+        counter.setText(no_of_clicks);
     }
 }
